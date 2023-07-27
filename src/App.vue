@@ -23,27 +23,16 @@ export default {
       AddTaskFormStatus: false,
     }
   },
-  created() {
-    this.MyTasksData = [
-      {
-        id: 1,
-        text: 'Doctors Appointment',
-        day: 'March 1st at 2:30pm',
-        reminder: true,
-      },
-      {
-        id: 2,
-        text: 'Meeting at School',
-        day: 'March 3rd at 1:30pm',
-        reminder: true,
-      },
-      {
-        id: 3,
-        text: 'Food Shopping',
-        day: 'March 3rd at 11:00am',
-        reminder: false,
-      },
-    ];
+  methods: {
+    async fetchMyTasks() {
+      const res = await fetch('http://localhost:5000/mytasks');
+      const myTasksData = await res.json();
+
+      return myTasksData;
+    }
+  },
+  async created() {
+    this.MyTasksData = await this.fetchMyTasks();
   },
   mounted() {
     this.emitter.on('deleteDataShot', (taskId) => {
